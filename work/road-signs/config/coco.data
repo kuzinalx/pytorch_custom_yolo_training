@@ -1,0 +1,6 @@
+classes=4
+train=/home/alexey/projects/pytorch-train/dataset/road-sign/train.txt
+valid=/home/alexey/projects/pytorch-train/dataset/road-sign/val.txt
+names=config/coco.names
+backup=backup/
+

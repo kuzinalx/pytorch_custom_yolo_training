@@ -12,9 +12,11 @@ COLORS = ['red', 'blue', 'yellow', 'pink', 'cyan', 'green', 'black']
 # image sizes for the examples
 SIZE = 256, 256
 
+mainPanelSize = 800
+
 class LabelTool():
     def __init__(self, master):
-        self.imgclass = 1
+        self.imgclass = 0
 
 
         # set up the main frame
@@ -155,9 +157,19 @@ class LabelTool():
     def loadImage(self):
         # load image
         imagepath = self.imageList[self.cur - 1]
-        self.img = Image.open(imagepath)
+        img = Image.open(imagepath)
+        img_height = img.height
+        img_width = img.width
+        if img_height >= img_width and img_height > mainPanelSize:
+            img_width = img_width * mainPanelSize / img_height
+            img_height = mainPanelSize
+        if img_width > img_height and img_width > mainPanelSize:
+            img_height = img_height * mainPanelSize / img_width
+            img_width = mainPanelSize
+        self.img = img.resize((int(img_width), int(img_height)), Image.ANTIALIAS)
         self.tkimg = ImageTk.PhotoImage(self.img)
-        self.mainPanel.config(width = max(self.tkimg.width(), 400), height = max(self.tkimg.height(), 400))
+        #self.mainPanel.config(width = max(self.tkimg.width(), 400), height = max(self.tkimg.height(), 400))
+        self.mainPanel.config(width=self.tkimg.width(), height=self.tkimg.height())
         self.mainPanel.create_image(0, 0, image = self.tkimg, anchor=NW)
         self.progLabel.config(text = "%04d/%04d" %(self.cur, self.total))
         imgw = self.img.size[0]
